@@ -25,7 +25,7 @@
             <div class="main-game-area">
                 <div class="game-status-and-clues">
                     <div class="hangman-area">
-                        <img id="imagen" src="image/imagen1.png" alt="Hangman" width="200" height="250" />
+                        <img id="imagen" src="image/imagen0.png" alt="Hangman" width="200" height="250" />
                         <div id="timer-display" class="timer-display">10:00</div>
                     </div>
 
