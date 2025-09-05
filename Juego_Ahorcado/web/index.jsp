@@ -1,10 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : 2 sept 2025, 08:37:53
-    Author     : informatica
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -27,29 +20,38 @@
             <div class="item">
                 <h2 class="titulo">Juego ahorcado</h2>
                 <div class="text-item">
-                    <h2>Â¡Bienvenido al juego!</h2>
+                    <h2>¡Bienvenido al juego!</h2>
                     <p>Utiliza tu mente y descubre las palabras ocultas</p>
                 </div>
             </div>
 
             <div class="login-section">
                 <div class="form-box login">
-                    <!-- Redirige al juego al iniciar sesiÃ³n -->
+                    <!-- Formulario para registro o inicio con más campos -->
                     <form action="ahorcado.jsp" method="post">
-                        <h2>Iniciar SesiÃ³n</h2>
-                        <div class="input-box">
-                            <span class="icon"><i class='bx bxs-envelope'></i></span>
-                            <input type="email" name="email" placeholder="Correo" required>
-                        </div>
-                        <div class="input-box">
-                            <span class="icon"><i class='bx bxs-lock-alt'></i></span>
-                            <input type="password" name="password" placeholder="ContraseÃ±a" required>
-                        </div>
-                        <div class="remember-password">
-                            <label><input type="checkbox"> Ver contraseÃ±a</label>
-                        </div>
-                        <button class="btn" type="submit">Iniciar sesiÃ³n</button>
+                        <h2>Registro / Iniciar Sesión</h2>
 
+                        <div class="input-box">
+                            <input type="text" name="nombre" placeholder="Nombre" required>
+                        </div>
+
+                        <div class="input-box">
+                            <input type="text" name="apellido" placeholder="Apellido" required>
+                        </div>
+
+                        <div class="input-box">
+                            <input type="email" name="correo" placeholder="Correo" required>
+                        </div>
+
+                        <div class="input-box">
+                            <input type="password" name="pass" placeholder="Contraseña" required>
+                        </div>
+
+                        <div class="remember-password">
+                            <label><input type="checkbox"> Ver contraseña</label>
+                        </div>
+
+                        <button class="btn" type="submit">Iniciar sesion</button>
                     </form>
                 </div>
             </div>
