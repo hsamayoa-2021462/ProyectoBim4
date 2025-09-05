@@ -17,12 +17,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Lista de palabras con al menos 8 caracteres, pista e imagen asociada
     const palabras = [
-        {palabra: "Computadora", pista: "Dispositivo para procesar información", imagen: "image/computadora.png"},
-        {palabra: "Television", pista: "Aparato para ver programas y películas", imagen: "image/television.png"},
-        {palabra: "Biblioteca", pista: "Lugar donde se guardan libros", imagen: "image/biblioteca.png"},
-        {palabra: "Telescopio", pista: "Instrumento para observar estrellas", imagen: "image/telescopio.png"},
-        {palabra: "Avioneta", pista: "Vehículo aéreo pequeño", imagen: "image/avioneta.png"}
+        {
+            palabra: "Computadora",
+            pistas: [
+                "Dispositivo para procesar información",
+                "Tiene teclado y pantalla",
+                "Se usa para programar"
+            ],
+            imagen: "image/computadora.png"
+        },
+        {
+            palabra: "Television",
+            pistas: [
+                "Aparato para ver programas y películas",
+                "Tiene pantalla grande",
+                "Requiere control remoto"
+            ],
+            imagen: "image/television.png"
+        },
+        {
+            palabra: "Biblioteca",
+            pistas: [
+                "Lugar donde se guardan libros",
+                "Es un lugar silencioso",
+                "Ideal para estudiar"
+            ],
+            imagen: "image/biblioteca.png"
+        },
+        {
+            palabra: "Telescopio",
+            pistas: [
+                "Instrumento para observar estrellas",
+                "Usado por astrónomos",
+                "Permite ver objetos lejanos"
+            ],
+            imagen: "image/telescopio.png"
+        },
+        {
+            palabra: "Avioneta",
+            pistas: [
+                "Vehículo aéreo pequeño",
+                "Puede aterrizar en pistas cortas",
+                "Usada para vuelos privados"
+            ],
+            imagen: "image/avioneta.png"
+        }
     ];
+
 
     let palabraSecreta = "";
     let palabraOculta = [];
@@ -96,9 +137,9 @@ document.addEventListener("DOMContentLoaded", function () {
         actualizarImagenAhorcado();
         actualizarPantalla();
         messageBox.textContent = "Descubre la palabra";
-        mostrarPista(seleccion.pista);
+        mostrarPistas(seleccion.pistas);
         iniciarTemporizador();
-        winModal.style.display = "none"; 
+        winModal.style.display = "none";
     }
 
     function actualizarPantalla() {
@@ -109,8 +150,13 @@ document.addEventListener("DOMContentLoaded", function () {
         hangmanImage.src = `image/imagen${errores}.png`;
     }
 
-    function mostrarPista(pista) {
-        cluesList.innerHTML = `<li>${pista}</li>`;
+    function mostrarPistas(pistas) {
+        cluesList.innerHTML = "";
+        pistas.forEach(pista => {
+            const li = document.createElement("li");
+            li.textContent = pista;
+            cluesList.appendChild(li);
+        });
     }
 
     function verificarLetra(letra) {
@@ -177,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function salirJuego() {
-        if (confirm("¿No pudiste?¿Estas seguro de salir el juego?")) {
+        if (confirm("¿Te quedo grande?¿Estas seguro de salir el juego?")) {
             messageBox.textContent = "¡Gracias por jugar, No te esperamos pronto JAJA!";
             deshabilitarBotonesJuego();
             startButton.disabled = false;
