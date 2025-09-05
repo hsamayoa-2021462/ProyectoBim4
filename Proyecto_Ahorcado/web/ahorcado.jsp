@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Juego Del Ahorcado</title>
 
-        <link rel="stylesheet" href="css/styles.css" />
+        <link rel="stylesheet" href="Styles/styles.css" />
         <link rel="icon" href="image/logo1.png" type="image/png">
         <script src="js/MyScript.js" defer></script>
     </head>

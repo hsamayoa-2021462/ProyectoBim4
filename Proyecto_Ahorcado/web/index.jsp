@@ -9,7 +9,7 @@
 <html lang="en">
     <head>
         <title>Juego Ahorcado</title>
-        <link rel="stylesheet" href="css/Styles1.css">
+        <link rel="stylesheet" href="Styles/Styles1.css">
         <link rel="icon" href="image/logo.png" type="image/png">
     </head>
     <body>
