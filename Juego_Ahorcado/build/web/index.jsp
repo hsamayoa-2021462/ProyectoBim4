@@ -1,7 +1,10 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
-        <title>Juego Ahorcado</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Juego Ahorcado - Login</title>
         <link rel="stylesheet" href="Styles/Styles1.css">
         <link rel="icon" href="Images/logo.png" type="image/png">
     </head>
@@ -14,47 +17,43 @@
                 </div>
             </div>
         </header>
-
         <div class="background"></div>
         <div class="container">
             <div class="item">
-                <h2 class="titulo">Juego ahorcado</h2>
+                <h2 class="titulo">Juego Ahorcado</h2>
                 <div class="text-item">
-                    <h2>¡Bienvenido al juego!</h2>
+                    <h2>Â¡Bienvenido al juego!</h2>
                     <p>Utiliza tu mente y descubre las palabras ocultas</p>
                 </div>
             </div>
-
             <div class="login-section">
+                <!-- Formulario solo para login -->
                 <div class="form-box login">
-                    <!-- Formulario para registro o inicio con más campos -->
-                    <form action="ahorcado.jsp" method="post">
-                        <h2>Registro / Iniciar Sesión</h2>
-
+                    <form id="loginForm" action="Validar" method="post">
+                        <h2>Iniciar SesiÃ³n</h2>
                         <div class="input-box">
-                            <input type="text" name="nombre" placeholder="Nombre" required>
+                            <input type="email" name="correo" id="correo" placeholder="Correo" required>
                         </div>
-
                         <div class="input-box">
-                            <input type="text" name="apellido" placeholder="Apellido" required>
+                            <input type="password" name="pass" id="pass" placeholder="ContraseÃ±a" required>
                         </div>
-
-                        <div class="input-box">
-                            <input type="email" name="correo" placeholder="Correo" required>
-                        </div>
-
-                        <div class="input-box">
-                            <input type="password" name="pass" placeholder="Contraseña" required>
-                        </div>
-
                         <div class="remember-password">
-                            <label><input type="checkbox"> Ver contraseña</label>
+                            <label>
+                                <input type="checkbox" id="showPass"> Ver contraseÃ±a
+                            </label>
                         </div>
-
-                        <button class="btn" type="submit">Iniciar sesion</button>
+                        <button class="btn" type="submit" id="loginBtn">Iniciar sesiÃ³n</button>
                     </form>
+                    <button class="btn" type="button" id="registroBtn" onclick="window.location.href = 'Controlador?menu=Registro'" style="margin-top: 15px;">Registrarse</button>
                 </div>
             </div>
         </div>
+        <script>
+            // Mostrar / ocultar contraseÃ±a
+            document.getElementById('showPass').addEventListener('change', function () {
+                const pass = document.getElementById('pass');
+                pass.type = this.checked ? 'text' : 'password';
+            });
+        </script>
     </body>
 </html>
