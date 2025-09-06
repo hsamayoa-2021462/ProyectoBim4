@@ -12,41 +12,55 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Juego Del Ahorcado</title>
 
+        <!-- CSS principal -->
         <link rel="stylesheet" href="Styles/styles.css" />
         <link rel="icon" href="Images/logo1.png" type="image/png">
+
+        <!-- JS del juego -->
         <script src="js/MyScript.js" defer></script>
     </head>
     <body>
         <div class="game-container">
+
+            <!-- Encabezado -->
             <div class="header">
                 <h1>Juego Del Ahorcado</h1>
             </div>
 
+            <!-- Área principal del juego -->
             <div class="main-game-area">
+
+                <!-- Sección de ahorcado y pistas -->
                 <div class="game-status-and-clues">
                     <div class="hangman-area">
-                        <img id="imagen" src="image/imagen0.png" alt="Hangman" width="200" height="250" />
+                        <!-- Imagen del ahorcado -->
+                        <img id="imagen" src="Images/imagen0.png" alt="Hangman" width="200" height="250" />
+                        <!-- Temporizador -->
                         <div id="timer-display" class="timer-display">10:00</div>
                     </div>
 
                     <div id="clues-section" class="clues-section">
                         <h2>Pistas de la Palabra</h2>
-                        <!-- ✅ Aquí dejamos la lista vacía para que el JS inserte las pistas dinámicamente -->
+                        <!-- Lista de pistas que se llenará desde JS -->
                         <ul id="clues-list"></ul>
                     </div>
                 </div>
 
+                <!-- Palabra a adivinar -->
                 <p id="palabraAdivinar"></p>
-                <div id="word-display" class="word-display"></div>
+
+                <!-- Mensajes del juego -->
                 <div id="message-box" class="message-box">Presiona "Iniciar" para comenzar.</div>
 
+                <!-- Botones de control -->
                 <div class="control-buttons">
                     <button id="jugar" class="start-btn">Iniciar</button>
                     <button id="restart-btn" class="restart-btn" disabled>Reiniciar</button>
                     <button id="pause-btn" class="pause-btn" disabled>Pausar</button>
-                    <button id="exit-btn" class="exit-btn">Salir</button>
+                    <button id="exit-btn" class="exit-btn" onclick="window.location.href='Controlador?menu=Principal'">Salir</button>
                 </div>
 
+                <!-- Botones de letras -->
                 <div id="letras">
                     <button class="letra">A</button>
                     <button class="letra">B</button>
@@ -76,11 +90,11 @@
                     <button class="letra">Y</button>
                     <button class="letra">Z</button>
                 </div>
+
             </div>
         </div>
 
-        <!-- Modal para mostrar una vista extra cuando se gana el juego
-        y rebela la imagen de la palabra descubierta-->
+        <!-- Modal para cuando el jugador gana -->
         <div id="win-modal" class="modal">
             <div class="modal-content">
                 <h2 id="modal-message"></h2>

@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Variables del juego 
     const hangmanImage = document.getElementById("imagen");
     const wordDisplay = document.getElementById("palabraAdivinar");
     const messageBox = document.getElementById("message-box");
@@ -15,77 +14,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalImage = document.getElementById("modal-image");
     const closeModalButton = document.getElementById("close-modal");
 
-    // Lista de palabras con al menos 8 caracteres, pista e imagen asociada
-    const palabras = [
-        {
-            palabra: "Computadora",
-            pistas: [
-                "Dispositivo para procesar información",
-                "Tiene teclado y pantalla",
-                "Se usa para programar"
-            ],
-            imagen: "Images/computadora.png"
-        },
-        {
-            palabra: "Television",
-            pistas: [
-                "Aparato para ver programas y películas",
-                "Tiene pantalla grande",
-                "Requiere control remoto"
-            ],
-            imagen: "Images/television.png"
-        },
-        {
-            palabra: "Biblioteca",
-            pistas: [
-                "Lugar donde se guardan libros",
-                "Es un lugar silencioso",
-                "Ideal para estudiar"
-            ],
-            imagen: "Images/biblioteca.png"
-        },
-        {
-            palabra: "Telescopio",
-            pistas: [
-                "Instrumento para observar estrellas",
-                "Usado por astrónomos",
-                "Permite ver objetos lejanos"
-            ],
-            imagen: "Images/telescopio.png"
-        },
-        {
-            palabra: "Avioneta",
-            pistas: [
-                "Vehículo aéreo pequeño",
-                "Puede aterrizar en pistas cortas",
-                "Usada para vuelos privados"
-            ],
-            imagen: "Images/avioneta.png"
-        }
-    ];
-
-
+    let palabras = [];
     let palabraSecreta = "";
     let palabraOculta = [];
     let errores = 0;
     const maxErrores = 6;
     let juegoPausado = false;
     let imagenPalabra = "";
-    let tiempoRestante = 600; // 10 minutos pasadi a segundos 
+    let tiempoRestante = 600; // 10 minutos
     let temporizador = null;
 
-    // Formatea el tiempo en este formato MM:SS
+    // Cargar palabras desde el servlet PalabraMP
+    async function cargarPalabras() {
+        const res = await fetch('PalabraMP');
+        palabras = await res.json();
+    }
+
+    // Formatear tiempo mm:ss
     function formatearTiempo(segundos) {
         const minutos = Math.floor(segundos / 60);
         const segundosRestantes = segundos % 60;
         return `${minutos.toString().padStart(2, "0")}:${segundosRestantes.toString().padStart(2, "0")}`;
     }
 
-    // Actualiza el temporizador cada segundo
+    // Actualizar el temporizador cada segundo
     function actualizarTemporizador() {
         if (tiempoRestante <= 0) {
             clearInterval(temporizador);
-            messageBox.textContent = `¡Tiempo Agotado XD! La palabra era ${palabraSecreta}.`;
+            temporizador = null;
+            messageBox.textContent = `¡Tiempo Agotado! La palabra era ${palabraSecreta}.`;
             deshabilitarBotonesJuego();
             return;
         }
@@ -93,16 +50,14 @@ document.addEventListener("DOMContentLoaded", function () {
         tiempoRestante--;
     }
 
-    // Inicia el conteo de tiempo
+    // Iniciar el temporizador (solo si no hay uno corriendo)
     function iniciarTemporizador() {
-        tiempoRestante = 600; // Reinicia a 10 minutos que fue lo estipulado
-        timerDisplay.textContent = formatearTiempo(tiempoRestante);
-        if (temporizador)
-            clearInterval(temporizador);
-        temporizador = setInterval(actualizarTemporizador, 1000);
+        if (!temporizador) {
+            temporizador = setInterval(actualizarTemporizador, 1000);
+        }
     }
 
-    // Detiene el conteo de tiempo 
+    // Detener el temporizador
     function detenerTemporizador() {
         if (temporizador) {
             clearInterval(temporizador);
@@ -110,46 +65,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Muestra una ventana donde dice que has ganado el juego 
+    // Mostrar modal ganador
     function mostrarModalGanador() {
-        modalMessage.textContent = `¡Has Ganado, Eres muy Bueno! La palabra es ${palabraSecreta}`;
+        modalMessage.textContent = `¡Has Ganado! La palabra es ${palabraSecreta}`;
         modalImage.src = imagenPalabra;
         winModal.style.display = "flex";
     }
 
-    // Cierra la ventana emergente que se muestra al ganar
     function cerrarModal() {
         winModal.style.display = "none";
     }
 
-    function inicializarJuego() {
-        letterButtons.forEach(button => {
-            button.disabled = false;
-        });
-        restartButton.disabled = false;
-        pauseButton.disabled = false;
-        juegoPausado = false;
-        const seleccion = palabras[Math.floor(Math.random() * palabras.length)];
-        palabraSecreta = seleccion.palabra;
-        palabraOculta = Array(palabraSecreta.length).fill("_");
-        errores = 0;
-        imagenPalabra = seleccion.imagen;
-        actualizarImagenAhorcado();
-        actualizarPantalla();
-        messageBox.textContent = "Descubre la palabra";
-        mostrarPistas(seleccion.pistas);
-        iniciarTemporizador();
-        winModal.style.display = "none";
-    }
-
-    function actualizarPantalla() {
-        wordDisplay.textContent = palabraOculta.join(" ");
-    }
-
-    function actualizarImagenAhorcado() {
-        hangmanImage.src = `Images/imagen${errores}.png`;
-    }
-
+    // Mostrar pistas
     function mostrarPistas(pistas) {
         cluesList.innerHTML = "";
         pistas.forEach(pista => {
@@ -159,81 +86,106 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Actualizar pantalla
+    function actualizarPantalla() { 
+        wordDisplay.textContent = palabraOculta.join(" "); 
+    }
+
+    function actualizarImagenAhorcado() { 
+        hangmanImage.src = `Images/imagen${errores}.png`; 
+    }
+
+    // Inicializar juego
+    function inicializarJuego() {
+        const seleccion = palabras[Math.floor(Math.random() * palabras.length)];
+        palabraSecreta = seleccion.palabra;
+        palabraOculta = Array(palabraSecreta.length).fill("_");
+        errores = 0;
+        juegoPausado = false;
+        imagenPalabra = "Images/" + palabraSecreta.toLowerCase() + ".png"; // opcional
+        actualizarImagenAhorcado();
+        actualizarPantalla();
+        mostrarPistas(seleccion.pistas);
+        tiempoRestante = 600; // reiniciar tiempo al iniciar juego
+        timerDisplay.textContent = formatearTiempo(tiempoRestante);
+        iniciarTemporizador();
+        winModal.style.display = "none";
+        letterButtons.forEach(b => b.disabled = false);
+        restartButton.disabled = false;
+        pauseButton.disabled = false;
+    }
+
+    // Verificar letra
     function verificarLetra(letra) {
-        if (juegoPausado)
-            return;
-
+        if (juegoPausado) return;
         let letraCorrecta = false;
-        const letraMayuscula = letra.toUpperCase();
-
+        letra = letra.toUpperCase();
         for (let i = 0; i < palabraSecreta.length; i++) {
-            if (palabraSecreta[i].toUpperCase() === letraMayuscula) {
+            if (palabraSecreta[i].toUpperCase() === letra) {
                 palabraOculta[i] = palabraSecreta[i];
                 letraCorrecta = true;
             }
         }
-
-        if (letraCorrecta) {
-            actualizarPantalla();
-        } else {
-            errores++;
-            actualizarImagenAhorcado();
-        }
-
+        if (!letraCorrecta) errores++;
+        actualizarPantalla();
+        actualizarImagenAhorcado();
         comprobarEstadoJuego();
     }
 
+    // Comprobar estado del juego
     function comprobarEstadoJuego() {
         if (palabraOculta.join("") === palabraSecreta) {
             mostrarModalGanador();
             deshabilitarBotonesJuego();
             detenerTemporizador();
         } else if (errores >= maxErrores) {
-            messageBox.textContent = `Has Perdido, eres muy MALO. La palabra era ${palabraSecreta}.`;
+            messageBox.textContent = `Has Perdido. La palabra era ${palabraSecreta}.`;
             deshabilitarBotonesJuego();
             detenerTemporizador();
         }
     }
 
+    // Deshabilitar botones del juego
     function deshabilitarBotonesJuego() {
-        letterButtons.forEach(button => {
-            button.disabled = true;
-        });
+        letterButtons.forEach(b => b.disabled = true);
         restartButton.disabled = false;
         pauseButton.disabled = true;
     }
 
-    function reiniciarJuego() {
-        inicializarJuego();
+    // Funciones principales
+    function reiniciarJuego() { 
+        inicializarJuego(); 
     }
 
     function pausarJuego() {
         juegoPausado = !juegoPausado;
         if (juegoPausado) {
             messageBox.textContent = "Juego pausado";
-            letterButtons.forEach(button => button.disabled = true);
-            pauseButton.textContent = "Reanudar juego";
+            letterButtons.forEach(b => b.disabled = true);
+            pauseButton.textContent = "Reanudar";
             detenerTemporizador();
         } else {
-            messageBox.textContent = "¡Adivina la palabra solicitada!";
-            letterButtons.forEach(button => button.disabled = false);
-            pauseButton.textContent = "Pausar el juego";
-            iniciarTemporizador();
+            messageBox.textContent = "¡Adivina la palabra!";
+            letterButtons.forEach(b => b.disabled = false);
+            pauseButton.textContent = "Pausar";
+            iniciarTemporizador(); // continúa desde donde quedó
         }
     }
 
     function salirJuego() {
-        if (confirm("¿Te quedo grande?¿Estas seguro de salir el juego?")) {
-            messageBox.textContent = "¡Gracias por jugar, No te esperamos pronto JAJA!";
+        if (confirm("¿Seguro que deseas salir?")) {
+            messageBox.textContent = "¡Gracias por jugar!";
             deshabilitarBotonesJuego();
             startButton.disabled = false;
             restartButton.disabled = true;
             pauseButton.disabled = true;
             detenerTemporizador();
             winModal.style.display = "none";
+            window.location.href = "Controlador?menu=Principal"; // redirige al index
         }
     }
 
+    // Eventos
     startButton.addEventListener("click", inicializarJuego);
     restartButton.addEventListener("click", reiniciarJuego);
     pauseButton.addEventListener("click", pausarJuego);
@@ -248,5 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    inicializarJuego();
+    // Cargar palabras y empezar juego
+    cargarPalabras().then(() => inicializarJuego());
 });
