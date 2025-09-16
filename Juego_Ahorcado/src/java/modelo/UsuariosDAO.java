@@ -8,7 +8,7 @@ import java.util.List;
 public class UsuariosDAO {
 
     public boolean validarUsuario(String correo, String pass) {
-        String sql = "SELECT * FROM Usuarios WHERE correo=? AND pass=?";
+        String sql = "SELECT * FROM Usuario WHERE correo=? AND pass=?";
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, correo);
