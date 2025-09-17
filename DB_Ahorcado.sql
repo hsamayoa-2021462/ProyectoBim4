@@ -148,3 +148,6 @@ create procedure sp_actualizarpalabra (
             where codigopalabra = _codigopalabra;			
     end//
 delimiter ;
+
+select * from Usuario; 
+select * from Palabra; 
