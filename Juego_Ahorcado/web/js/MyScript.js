@@ -203,3 +203,5 @@ document.addEventListener("DOMContentLoaded", function () {
     // Cargar palabras y empezar juego
     cargarPalabras().then(() => inicializarJuego());
 });
+
+    // Funcion para mostrar una imagen predeterminada al agregar nuevas palabras.. 
