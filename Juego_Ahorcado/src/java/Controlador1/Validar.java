@@ -23,25 +23,23 @@ public class Validar extends HttpServlet {
         // Instancia del DAO
         UsuariosDAO dao = new UsuariosDAO();
 
-        // Habilitar salida para debug
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-
-            out.println("<h3>Debug de login</h3>");
-            out.println("<p>Correo recibido: " + correo + "</p>");
-            out.println("<p>Contraseña recibida: " + pass + "</p>");
-
+        try {
             boolean existe = dao.validarUsuario(correo, pass);
 
             if (existe) {
-                // Usuario correcto
+                // Usuario correcto: establece la sesión y redirige
                 request.getSession().setAttribute("usuario", correo);
-                out.println("<p style='color:green;'>Usuario válido, redirigiendo...</p>");
+                System.out.println("Inicio de sesión exitoso para el usuario ingresado: " + correo);
+                System.out.println("Inicio de sesión exitoso para la contraseña del usuario ingresado: " + pass);
                 response.sendRedirect("Controlador?menu=Ahorcado");
             } else {
-                response.sendRedirect("Controlador?menu=Principal");
+                // Usuario incorrecto: redirige de vuelta a la página principal con un parámetro
+                System.out.println("Intento de inicio de sesión fallido con el correo: " + correo);
+                System.out.println("Contraseña incorrecta, revisa los campos o tu contraseña: " + pass);
+                response.sendRedirect("Controlador?menu=Principal&error=credenciales_invalidas");
             }
         } catch (Exception e) {
+            System.err.println("ERROR: Se produjo una excepción durante la validación de credenciales.");
             e.printStackTrace();
         }
     }

@@ -29,6 +29,19 @@
             <div class="login-section">
                 <!-- Formulario solo para login -->
                 <div class="form-box login">
+                    <%
+                        // Obtener el parámetro 'error' de la URL
+                        String error = request.getParameter("error");
+
+                        // Si el parámetro existe y su valor es 'credenciales_invalidas', mostrar el mensaje
+                        if (error != null && error.equals("credenciales_invalidas")) {
+                    %>
+                    <p style="color: red; text-align: center; margin-bottom: 15px;">
+                        Credenciales incorrectas. Por favor, inténtalo de nuevo.
+                    </p>
+                    <%
+                        }
+                    %>
                     <form id="loginForm" action="Validar" method="post">
                         <h2>Iniciar Sesión</h2>
                         <div class="input-box">
