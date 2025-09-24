@@ -33,9 +33,14 @@ public class PalabraController {
     @PostMapping
     public String createPalabra(@RequestBody Palabra palabra) {
         Palabra result = palabraService.savePalabra(palabra);
-        if (result == null) {
-            return "Error al registrar la palabra. Verifica los datos ingresados.";
+
+        if ("Vacio".equals(result.getPalabra())) {
+            return "Los campos deben estar llenos xd";
         }
+        if("EnUso".equals(result.getPalabra())) {
+            return "La palabra ya existe, agrega una nueva";
+        }
+
         return "Palabra agregada exitosamente al juego.";
     }
 
