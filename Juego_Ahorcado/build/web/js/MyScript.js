@@ -69,6 +69,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function mostrarModalGanador() {
         modalMessage.textContent = `¡Has Ganado! La palabra es ${palabraSecreta}`;
         modalImage.src = imagenPalabra;
+        modalImage.onerror = () => { // Use un onerror para manejar errores de carga, 
+            //mostrar una imagen predeterminada para las nuevas palabras agregadas
+            modalImage.src = "Images/victoria.png";
+            modalImage.onerror = null;
+        };
+        // Muestra el modal en la pantalla.
         winModal.style.display = "flex";
     }
 
@@ -87,12 +93,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Actualizar pantalla
-    function actualizarPantalla() { 
-        wordDisplay.textContent = palabraOculta.join(" "); 
+    function actualizarPantalla() {
+        wordDisplay.textContent = palabraOculta.join(" ");
     }
 
-    function actualizarImagenAhorcado() { 
-        hangmanImage.src = `Images/imagen${errores}.png`; 
+    function actualizarImagenAhorcado() {
+        hangmanImage.src = `Images/imagen${errores}.png`;
     }
 
     // Inicializar juego
@@ -117,7 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Verificar letra
     function verificarLetra(letra) {
-        if (juegoPausado) return;
+        if (juegoPausado)
+            return;
         let letraCorrecta = false;
         letra = letra.toUpperCase();
         for (let i = 0; i < palabraSecreta.length; i++) {
@@ -126,7 +133,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 letraCorrecta = true;
             }
         }
-        if (!letraCorrecta) errores++;
+        if (!letraCorrecta)
+            errores++;
         actualizarPantalla();
         actualizarImagenAhorcado();
         comprobarEstadoJuego();
@@ -153,8 +161,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Funciones principales
-    function reiniciarJuego() { 
-        inicializarJuego(); 
+    function reiniciarJuego() {
+        inicializarJuego();
     }
 
     function pausarJuego() {
@@ -204,4 +212,4 @@ document.addEventListener("DOMContentLoaded", function () {
     cargarPalabras().then(() => inicializarJuego());
 });
 
-    // Funcion para mostrar una imagen predeterminada al agregar nuevas palabras.. 
+// Funcion para mostrar una imagen predeterminada al agregar nuevas palabras.. 
